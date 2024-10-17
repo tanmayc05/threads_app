@@ -29,7 +29,7 @@ export async function updateUser({
   onboarded
 }: Params): Promise<void> {
   try {
-    connectToDB();
+    await connectToDB();
 
     await User.findOneAndUpdate(
       { id: userId },
@@ -53,7 +53,7 @@ export async function updateUser({
 
 export async function fetchUser(userId: string) {
   try {
-    connectToDB();
+    await connectToDB();
     return await User.findOne({ id: userId })
     // .populate({
     
@@ -65,7 +65,7 @@ export async function fetchUser(userId: string) {
 
 export async function fetchUserPosts(userId: string) {
   try {
-    connectToDB();
+    await connectToDB();
     const threads = await User.findOne({ id: userId }).populate({
       path: "threads",
       model: Thread,
@@ -90,7 +90,7 @@ export async function fetchUserPosts(userId: string) {
 
 export async function fetchUsers({userId, searchString, pageNumber = 1 , pageSize = 20, sortBy = "desc"} : {userId: string, searchString: string, pageNumber?: number, pageSize?: number, sortBy?: SortOrder}) {
   try {
-    connectToDB();
+    await connectToDB();
     const skipAmount = (pageNumber - 1) * pageSize;
 
     const regex = new RegExp(searchString, "i");
@@ -126,7 +126,7 @@ export async function fetchUsers({userId, searchString, pageNumber = 1 , pageSiz
 
 export async function getActivity(userId: string) {
   try {
-    connectToDB();
+    await connectToDB();
 
     // find all threads created by the user
     const userThreads = await Thread.find({author: userId})
